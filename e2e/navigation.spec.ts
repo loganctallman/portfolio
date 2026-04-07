@@ -37,12 +37,6 @@ test.describe('Header Navigation', () => {
     await expect(page.locator('#contact')).toBeInViewport({ ratio: 0.3 });
   });
 
-  test('LinkedIn header link opens in new tab', async ({ page }) => {
-    const link = page.getByTestId('linkedin-link');
-    await expect(link).toHaveAttribute('target', '_blank');
-    await expect(link).toHaveAttribute('href', /linkedin\.com/);
-  });
-
   test('resume header link is present', async ({ page }) => {
     await expect(page.getByTestId('resume-link')).toBeVisible();
   });

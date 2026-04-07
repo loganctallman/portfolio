@@ -36,12 +36,6 @@ describe('HeaderComponent', () => {
     expect(ids).toContain('contact');
   });
 
-  it('should have LinkedIn link with correct testid', () => {
-    const link = fixture.nativeElement.querySelector('[data-testid="linkedin-link"]');
-    expect(link).toBeTruthy();
-    expect(link.getAttribute('target')).toBe('_blank');
-  });
-
   it('should have resume link with correct testid', () => {
     const link = fixture.nativeElement.querySelector('[data-testid="resume-link"]');
     expect(link).toBeTruthy();

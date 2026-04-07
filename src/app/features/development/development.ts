@@ -99,7 +99,7 @@ export class DevelopmentComponent implements OnInit {
         'A responsive Next.js application featuring dynamic equation generation and client-side state management. It leverages custom parameters for arithmetic challenges and utilizes local storage for low-latency session history and performance analytics.',
       techStack: ['Next.js', 'React', 'Tailwind CSS', 'Lucide React', 'Vercel', 'Playwright', 'JUnit 5', 'JMeter'],
       liveUrl: 'https://fastmathhelper.vercel.app',
-      repoUrl: 'https://github.com/loganctallman/mathtrainer',
+      repoUrl: 'https://github.com/loganctallman/mathapp',
       screenshotAlt: 'Math Trainer application screenshot',
       images: [
         'mathtrainer/mathtrainer.jpg',

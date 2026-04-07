@@ -1,0 +1,122 @@
+<section id="test-suites" class="test-suites-section" aria-label="Automated test suites">
+  <div class="section">
+    <span class="section-label">
+      <lucide-icon [img]="FlaskConical" size="14"></lucide-icon>
+      Automation Arsenal
+    </span>
+    <h2 class="section-title">Automated Test Suites</h2>
+    <p class="section-subtitle">
+      A full-spectrum testing strategy — from unit to load — ensuring every layer
+      of the stack is validated before it ships.
+    </p>
+
+    <!-- Tool Cards Grid -->
+    <div class="tools-grid" role="list">
+      @for (tool of tools; track tool.id; let toolIdx = $index) {
+        <mat-card
+          class="tool-card"
+          role="listitem"
+          [attr.data-testid]="'tool-card-' + tool.id"
+          [style.--tool-color]="tool.color"
+          [style.--tool-accent]="tool.accentColor"
+        >
+          <!-- ── Carousel ─────────────────────────────────────────────── -->
+          <div
+            class="card-carousel"
+            [attr.aria-label]="tool.screenshotAlt"
+            [attr.aria-roledescription]="'carousel'"
+          >
+            <!-- Film-strip track: all slides sit side-by-side, track slides left -->
+            <div
+              class="carousel-track"
+              [style.transform]="'translateX(-' + (getSlideIndex(toolIdx) * 100) + '%)'"
+            >
+              <!-- Slide 0: placeholder -->
+              <div class="carousel-slide" aria-hidden="true">
+                <div class="screenshot-placeholder">
+                  <div class="placeholder-dots">
+                    <span></span><span></span><span></span>
+                  </div>
+                  <div class="placeholder-bar wide"></div>
+                  <div class="placeholder-bar medium"></div>
+                  <div class="placeholder-bar narrow"></div>
+                  <div class="placeholder-grid">
+                    <div></div><div></div><div></div>
+                    <div></div><div></div><div></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slides 1..n: real screenshots -->
+              @for (img of tool.images; track img) {
+                <div class="carousel-slide">
+                  <img
+                    [src]="img"
+                    [alt]="tool.screenshotAlt"
+                    class="carousel-img"
+                    loading="lazy"
+                  />
+                </div>
+              }
+            </div>
+
+            <!-- Category badge (always visible) -->
+            <div class="screenshot-overlay">
+              <span class="tool-category-badge">{{ tool.category }}</span>
+            </div>
+
+            <!-- Dot indicators -->
+            <div class="carousel-dots" role="tablist" [attr.aria-label]="tool.name + ' slide indicators'">
+              @for (slide of [].constructor(totalSlides(tool)); track $index) {
+                <button
+                  class="dot"
+                  role="tab"
+                  [class.active]="getSlideIndex(toolIdx) === $index"
+                  (click)="goToSlide(toolIdx, $index)"
+                  [attr.aria-selected]="getSlideIndex(toolIdx) === $index"
+                  [attr.aria-label]="'Go to slide ' + ($index + 1)"
+                ></button>
+              }
+            </div>
+          </div>
+          <!-- ── / Carousel ───────────────────────────────────────────── -->
+
+          <!-- Card Content -->
+          <mat-card-header>
+<mat-card-title class="tool-name">{{ tool.name }}</mat-card-title>
+            <mat-card-subtitle class="tool-category">{{ tool.category }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content class="tool-content">
+            <p class="tool-description">{{ tool.description }}</p>
+
+            <div class="tool-highlights" aria-label="Feature highlights">
+              @for (highlight of tool.highlights; track highlight) {
+                <span
+                  class="highlight-chip"
+                  [style.color]="tool.color"
+                  [style.border-color]="tool.accentColor"
+                >{{ highlight }}</span>
+              }
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions class="card-actions">
+            <a
+              mat-stroked-button
+              [href]="tool.link"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="tool-link-btn"
+              [attr.data-testid]="'tool-link-' + tool.id"
+              [attr.aria-label]="'View ' + tool.name + ' documentation'"
+            >
+              <lucide-icon [img]="ExternalLink" size="14"></lucide-icon>
+              View Docs
+            </a>
+          </mat-card-actions>
+        </mat-card>
+      }
+    </div>
+  </div>
+</section>

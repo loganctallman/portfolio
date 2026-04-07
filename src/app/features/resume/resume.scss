@@ -1,0 +1,97 @@
+.resume-section {
+  background: var(--color-bg-surface);
+}
+
+.resume-actions {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+  flex-wrap: wrap;
+}
+
+.download-btn {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #4f46e5 100%) !important;
+  color: #fff !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 10px 24px !important;
+  border-radius: var(--radius-sm) !important;
+  font-weight: 600 !important;
+  box-shadow: 0 4px 20px var(--color-primary-glow) !important;
+
+  &:hover {
+    box-shadow: 0 8px 30px var(--color-primary-glow) !important;
+  }
+}
+
+.open-btn {
+  color: var(--color-text-secondary) !important;
+  border-color: var(--color-border-bright) !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 10px 24px !important;
+  border-radius: var(--radius-sm) !important;
+  font-weight: 600 !important;
+
+  &:hover {
+    color: var(--color-text-primary) !important;
+    background: rgba(255,255,255,0.04) !important;
+  }
+}
+
+// ─── PDF Container ────────────────────────────────────────────────────────────
+.pdf-container {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+  background: var(--color-bg-card);
+}
+
+.pdf-viewer {
+  width: 100%;
+  height: 800px;
+  border: none;
+  display: block;
+
+  @media (max-width: 768px) {
+    height: 500px;
+  }
+}
+
+// ─── Fallback ─────────────────────────────────────────────────────────────────
+.pdf-fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  padding: var(--space-3xl) var(--space-xl);
+  text-align: center;
+}
+
+.fallback-icon {
+  color: var(--color-text-muted);
+}
+
+.fallback-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.fallback-desc {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+}
+
+.fallback-btn {
+  color: var(--color-primary-light) !important;
+  border-color: var(--color-border-bright) !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: var(--space-sm);
+  border-radius: var(--radius-sm) !important;
+}

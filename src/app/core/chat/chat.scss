@@ -1,0 +1,172 @@
+:host {
+  position: fixed;
+  bottom: var(--space-xl);
+  right: var(--space-xl);
+  z-index: 2000;
+  // Only sized to the FAB — panel floats absolutely above it
+  display: block;
+  width: 56px;
+  height: 56px;
+
+  @media (max-width: 768px) {
+    bottom: var(--space-md);
+    right: var(--space-md);
+  }
+}
+
+// ─── FAB ──────────────────────────────────────────────────────────────────────
+.chat-fab {
+  width: 56px !important;
+  height: 56px !important;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #4f46e5 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 8px 32px var(--color-primary-glow), 0 2px 8px rgba(0,0,0,0.4) !important;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast) !important;
+
+  &:hover {
+    transform: scale(1.08);
+    box-shadow: 0 12px 40px var(--color-primary-glow), 0 4px 12px rgba(0,0,0,0.4) !important;
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+// ─── Chat Panel ───────────────────────────────────────────────────────────────
+.chat-panel {
+  // Absolutely positioned above the FAB — zero impact on page layout
+  position: absolute;
+  bottom: calc(100% + var(--space-md)); // sits above the FAB
+  right: 0;
+  width: 380px;
+  height: 540px;
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-bright);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: var(--shadow-card), var(--shadow-glow);
+  transform-origin: bottom right;
+
+  // Hidden state
+  opacity: 0;
+  transform: scale(0.85) translateY(24px);
+  pointer-events: none;
+  transition: opacity 280ms cubic-bezier(0.4, 0, 0.2, 1),
+              transform 280ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &.is-open {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: all;
+  }
+
+  &.expanded {
+    width: 560px;
+    height: 700px;
+
+    @media (max-width: 640px) {
+      width: calc(100vw - 32px);
+      height: calc(100vh - 120px);
+    }
+  }
+
+  @media (max-width: 640px) {
+    width: calc(100vw - 32px);
+    height: 480px;
+  }
+}
+
+// ─── Panel Header ─────────────────────────────────────────────────────────────
+.chat-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-md) var(--space-md) var(--space-lg);
+  background: linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(6,182,212,0.08) 100%);
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.chat-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.chat-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.chat-title-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-name {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1.2;
+}
+
+.chat-status {
+  font-size: 0.7rem;
+  color: var(--color-success);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-success);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1;   transform: scale(1);    }
+  50%       { opacity: 0.5; transform: scale(1.3);  }
+}
+
+.chat-actions {
+  display: flex;
+  align-items: center;
+}
+
+.chat-action-btn {
+  color: var(--color-text-muted) !important;
+  width: 28px !important;
+  height: 28px !important;
+
+  &:hover {
+    color: var(--color-text-primary) !important;
+    background: rgba(255,255,255,0.06) !important;
+  }
+}
+
+// ─── Chat Body (iframe) ───────────────────────────────────────────────────────
+.chat-body {
+  flex: 1;
+  overflow: hidden;
+  background: var(--color-bg-base);
+}
+
+.chat-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}

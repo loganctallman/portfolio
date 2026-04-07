@@ -1,0 +1,68 @@
+<header class="site-header" [class.scrolled]="isScrolled()">
+  <mat-toolbar class="toolbar">
+    <!-- Logo / Name -->
+    <a class="brand" data-testid="brand-logo" (click)="scrollTo('hero')">
+      <span class="brand-name">Logan<span class="brand-dot">.</span></span>
+      <span class="brand-subtitle">QA &amp; Dev</span>
+    </a>
+
+    <span class="spacer"></span>
+
+    <!-- Desktop Nav -->
+    <nav class="nav-links" aria-label="Main navigation">
+      <!-- Sections Dropdown -->
+      <button
+        mat-button
+        class="nav-btn sections-btn"
+        [matMenuTriggerFor]="sectionsMenu"
+        data-testid="sections-menu-trigger"
+        aria-haspopup="true"
+      >
+        Sections
+        <lucide-icon [img]="ChevronDown" size="16" class="chevron-icon"></lucide-icon>
+      </button>
+
+      <mat-menu #sectionsMenu="matMenu" class="sections-dropdown">
+        @for (section of sections; track section.id) {
+          <button
+            mat-menu-item
+            class="section-item"
+            (click)="scrollTo(section.id)"
+            [attr.data-testid]="'nav-' + section.id"
+          >
+            <mat-icon>{{ section.icon }}</mat-icon>
+            <span>{{ section.label }}</span>
+          </button>
+        }
+      </mat-menu>
+
+      <!-- LinkedIn -->
+      <a
+        mat-button
+        class="nav-btn"
+        href="https://linkedin.com/in/logan-tallman-9245583b4/"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-testid="linkedin-link"
+        aria-label="View LinkedIn profile"
+      >
+        LinkedIn
+        <lucide-icon [img]="ExternalLink" size="14" class="ext-icon"></lucide-icon>
+      </a>
+
+      <!-- Resume -->
+      <a
+        mat-stroked-button
+        class="nav-btn resume-btn"
+        href="/resume.pdf"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-testid="resume-link"
+        aria-label="Download resume"
+      >
+        <lucide-icon [img]="FileText" size="14"></lucide-icon>
+        Resume
+      </a>
+    </nav>
+  </mat-toolbar>
+</header>

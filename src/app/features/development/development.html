@@ -1,0 +1,166 @@
+<section id="development" class="development-section" aria-label="Development projects">
+  <div class="section">
+    <span class="section-label">
+      <lucide-icon [img]="Code2" size="14"></lucide-icon>
+      Projects
+    </span>
+    <h2 class="section-title">Development Work</h2>
+    <p class="section-subtitle">
+      Real-world applications built with quality baked in from day one —
+      not bolted on after the fact.
+    </p>
+
+    <div class="projects-list">
+      @for (project of projects; track project.id; let projIdx = $index) {
+        <article
+          class="project-card"
+          [class.is-expanded]="isExpanded(project.id)"
+          [attr.data-testid]="'project-card-' + project.id"
+        >
+          <!-- Screenshot / Carousel -->
+          <div
+            class="project-screenshot"
+            [attr.aria-label]="project.screenshotAlt"
+            [attr.aria-roledescription]="project.images?.length ? 'carousel' : null"
+          >
+            <!-- Film-strip track -->
+            <div
+              class="carousel-track"
+              [style.transform]="'translateX(-' + (getSlideIndex(projIdx) * 100) + '%)'"
+            >
+              <!-- Slide 0: mockup placeholder -->
+              <div class="carousel-slide" aria-hidden="true">
+                <div class="screenshot-mockup">
+                  <div class="mockup-bar">
+                    <span class="dot r"></span>
+                    <span class="dot y"></span>
+                    <span class="dot g"></span>
+                    <div class="mockup-url-bar">
+                      <span>{{ project.liveUrl }}</span>
+                    </div>
+                  </div>
+                  <div class="mockup-body">
+                    <div class="mockup-line l80"></div>
+                    <div class="mockup-line l60"></div>
+                    <div class="mockup-line l90"></div>
+                    <div class="mockup-grid-2">
+                      <div></div><div></div>
+                    </div>
+                    <div class="mockup-line l50"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Slides 1..n: real screenshots -->
+              @for (img of project.images; track img) {
+                <div class="carousel-slide">
+                  <img
+                    [src]="img"
+                    [alt]="project.screenshotAlt"
+                    class="carousel-img"
+                    loading="lazy"
+                  />
+                </div>
+              }
+            </div>
+
+            <!-- Dot indicators (only when there are real images) -->
+            @if (project.images?.length) {
+              <div class="carousel-dots" role="tablist">
+                @for (slide of [].constructor(totalSlides(project)); track $index; let dotIdx = $index) {
+                  <button
+                    class="dot"
+                    role="tab"
+                    [class.active]="getSlideIndex(projIdx) === dotIdx"
+                    (click)="goToSlide(projIdx, dotIdx)"
+                    [attr.aria-selected]="getSlideIndex(projIdx) === dotIdx"
+                    [attr.aria-label]="'Go to slide ' + (dotIdx + 1)"
+                  ></button>
+                }
+              </div>
+            }
+          </div>
+
+          <!-- Project Info -->
+          <div class="project-info">
+            <div class="project-header">
+              <div>
+                <p class="project-subtitle">{{ project.subtitle }}</p>
+                <h3 class="project-title">{{ project.title }}</h3>
+              </div>
+              <div class="project-links">
+                <a
+                  [href]="project.liveUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="icon-link"
+                  [attr.data-testid]="'project-live-' + project.id"
+                  [attr.aria-label]="'Open ' + project.title + ' live app'"
+                >
+                  <lucide-icon [img]="ExternalLink" size="16"></lucide-icon>
+                </a>
+                <a
+                  [href]="project.repoUrl"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="icon-link"
+                  [attr.data-testid]="'project-repo-' + project.id"
+                  [attr.aria-label]="'View ' + project.title + ' source code'"
+                >
+                  <lucide-icon [img]="Github" size="16"></lucide-icon>
+                </a>
+              </div>
+            </div>
+
+            <p class="project-description">{{ project.description }}</p>
+
+            <!-- Tech Stack -->
+            <div class="tech-stack" aria-label="Technologies used">
+              @for (tech of project.techStack; track tech) {
+                <span class="tech-badge">{{ tech }}</span>
+              }
+            </div>
+
+            <!-- Deep Dive Toggle -->
+            <button
+              class="deep-dive-toggle"
+              (click)="toggleExpand(project.id)"
+              [attr.data-testid]="'deep-dive-toggle-' + project.id"
+              [attr.aria-expanded]="isExpanded(project.id)"
+              [attr.aria-controls]="'deep-dive-' + project.id"
+            >
+              <lucide-icon [img]="FlaskConical" size="14"></lucide-icon>
+              Testing Deep Dive
+              <lucide-icon
+                [img]="ChevronDown"
+                size="14"
+                class="chevron"
+                [class.rotated]="isExpanded(project.id)"
+              ></lucide-icon>
+            </button>
+
+            <!-- Deep Dive Panel -->
+            @if (isExpanded(project.id)) {
+              <div
+                class="deep-dive-panel"
+                [id]="'deep-dive-' + project.id"
+                role="region"
+                [attr.aria-label]="project.title + ' testing strategy'"
+              >
+                <p class="deep-dive-summary">{{ project.testingStrategy.summary }}</p>
+                <div class="testing-layers">
+                  @for (layer of project.testingStrategy.layers; track layer.label) {
+                    <div class="layer-item">
+                      <span class="layer-label">{{ layer.label }}</span>
+                      <p class="layer-detail">{{ layer.detail }}</p>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        </article>
+      }
+    </div>
+  </div>
+</section>

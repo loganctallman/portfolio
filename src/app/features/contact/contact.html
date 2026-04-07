@@ -1,0 +1,89 @@
+<section id="contact" class="contact-section" aria-label="Contact information">
+  <!-- Background -->
+  <div class="contact-glow" aria-hidden="true"></div>
+
+  <div class="section">
+    <span class="section-label">
+      <lucide-icon [img]="Mail" size="14"></lucide-icon>
+      Get In Touch
+    </span>
+    <h2 class="section-title">Let's Work Together</h2>
+    <p class="section-subtitle">
+      Whether you're looking for a Senior QA engineer, an automation architect, or a
+      full-stack developer — I'd love to hear about your project.
+    </p>
+
+    <div class="contact-grid">
+      <!-- Primary CTA -->
+      <div class="contact-card primary-cta">
+        <div class="cta-icon">
+          <lucide-icon [img]="Send" size="28"></lucide-icon>
+        </div>
+        <h3 class="cta-title">Send Me a Message</h3>
+        <p class="cta-desc">
+          The fastest way to reach me is via email. I typically respond within 24 hours.
+        </p>
+        <a
+          mat-raised-button
+          class="email-btn"
+          [href]="'mailto:' + email + '?subject=Portfolio%20Inquiry'"
+          data-testid="contact-email-link"
+          [attr.aria-label]="'Send email to ' + email"
+        >
+          <lucide-icon [img]="Mail" size="16"></lucide-icon>
+          {{ email }}
+        </a>
+
+        <button
+          mat-stroked-button
+          class="email-trigger-btn"
+          (click)="triggerEmail()"
+          data-testid="contact-email-trigger"
+          aria-label="Open email client"
+        >
+          Open Email Client
+        </button>
+      </div>
+
+      <!-- Social Links -->
+      <div class="contact-card socials-card">
+        <h3 class="socials-title">Find Me Online</h3>
+        <div class="socials-list">
+          @for (social of socials; track social.label) {
+            <a
+              class="social-row"
+              [href]="social.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              [attr.data-testid]="social.testId"
+              [attr.aria-label]="'Visit ' + social.label + ' profile'"
+            >
+              <div class="social-icon-wrap" [style.--social-color]="social.color">
+                <lucide-icon [img]="social.icon" size="18"></lucide-icon>
+              </div>
+              <div class="social-info">
+                <span class="social-name">{{ social.label }}</span>
+                <span class="social-url">{{ social.url }}</span>
+              </div>
+              <lucide-icon [img]="Mail" size="14" class="social-arrow"></lucide-icon>
+            </a>
+          }
+        </div>
+
+        <!-- Location -->
+        <div class="location-row">
+          <lucide-icon [img]="MapPin" size="16" class="location-icon"></lucide-icon>
+          <span class="location-text">Available Remotely Worldwide</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer note -->
+    <p class="footer-note">
+      Built with Angular 21 + Angular Material · Hosted on Vercel ·
+      <a href="https://github.com/loganctallman/portfolio" target="_blank" rel="noopener noreferrer" data-testid="contact-source-link">
+        View Source
+      </a>
+    </p>
+  </div>
+</section>

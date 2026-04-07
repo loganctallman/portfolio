@@ -1,0 +1,77 @@
+<!-- Chat Panel -->
+<div
+  class="chat-panel"
+  [class.is-open]="isOpen()"
+  [class.expanded]="isExpanded()"
+  role="dialog"
+  aria-label="LoganGPT chat assistant"
+  aria-modal="true"
+>
+  <!-- Panel Header -->
+  <div class="chat-header">
+    <div class="chat-title">
+      <div class="chat-avatar">
+        <lucide-icon [img]="Bot" size="16"></lucide-icon>
+      </div>
+      <div class="chat-title-text">
+        <span class="chat-name">LoganGPT</span>
+        <span class="chat-status">
+          <span class="status-dot"></span>Online
+        </span>
+      </div>
+    </div>
+    <div class="chat-actions">
+      <button
+        mat-icon-button
+        class="chat-action-btn"
+        (click)="toggleExpand()"
+        [matTooltip]="isExpanded() ? 'Minimize' : 'Expand'"
+        [attr.data-testid]="'chat-expand-btn'"
+        [attr.aria-label]="isExpanded() ? 'Minimize chat' : 'Expand chat'"
+      >
+        <lucide-icon [img]="isExpanded() ? Minimize2 : Maximize2" size="14"></lucide-icon>
+      </button>
+      <button
+        mat-icon-button
+        class="chat-action-btn"
+        (click)="close()"
+        data-testid="chat-close-btn"
+        aria-label="Close chat"
+      >
+        <lucide-icon [img]="X" size="14"></lucide-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- iframe Body -->
+  <div class="chat-body">
+    @if (isOpen()) {
+      <iframe
+        [src]="chatSafeUrl"
+        title="LoganGPT AI Assistant"
+        class="chat-iframe"
+        allow="microphone"
+        data-testid="chat-iframe"
+        loading="lazy"
+      ></iframe>
+    }
+  </div>
+</div>
+
+<!-- FAB -->
+<button
+  mat-fab
+  class="chat-fab"
+  (click)="toggle()"
+  data-testid="chat-fab"
+  [attr.aria-label]="isOpen() ? 'Close LoganGPT' : 'Open LoganGPT'"
+  [attr.aria-expanded]="isOpen()"
+  matTooltip="Chat with LoganGPT"
+  matTooltipPosition="left"
+>
+  @if (isOpen()) {
+    <lucide-icon [img]="X" size="22"></lucide-icon>
+  } @else {
+    <lucide-icon [img]="Bot" size="22"></lucide-icon>
+  }
+</button>

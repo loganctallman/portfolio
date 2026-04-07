@@ -1,0 +1,222 @@
+.contact-section {
+  background: var(--color-bg-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-glow {
+  position: absolute;
+  width: 800px;
+  height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(99,102,241,0.1) 0%, transparent 70%);
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+// ─── Grid ─────────────────────────────────────────────────────────────────────
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ─── Cards ────────────────────────────────────────────────────────────────────
+.contact-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  transition: border-color var(--transition-normal);
+  min-width: 0; // prevent grid blowout
+
+  &:hover {
+    border-color: var(--color-border-bright);
+  }
+
+  @media (max-width: 480px) {
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+  }
+}
+
+// ─── Primary CTA ──────────────────────────────────────────────────────────────
+.primary-cta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  background: linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(6,182,212,0.04) 100%);
+  border-color: var(--color-border-bright);
+}
+
+.cta-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--color-primary) 0%, #4f46e5 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 4px 20px var(--color-primary-glow);
+}
+
+.cta-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.cta-desc {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+}
+
+.email-btn {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #4f46e5 100%) !important;
+  color: #fff !important;
+  display: inline-flex !important;
+  align-items: center;
+  gap: var(--space-sm);
+  border-radius: var(--radius-sm) !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  box-shadow: 0 4px 20px var(--color-primary-glow) !important;
+  padding: 10px 20px !important;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:hover {
+    box-shadow: 0 8px 30px var(--color-primary-glow) !important;
+  }
+}
+
+.email-trigger-btn {
+  color: var(--color-text-secondary) !important;
+  border-color: var(--color-border-bright) !important;
+  border-radius: var(--radius-sm) !important;
+  font-size: 0.875rem !important;
+  padding: 8px 20px !important;
+
+  &:hover {
+    color: var(--color-text-primary) !important;
+    background: rgba(255,255,255,0.04) !important;
+  }
+}
+
+// ─── Socials Card ─────────────────────────────────────────────────────────────
+.socials-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-lg);
+}
+
+.socials-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.social-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  transition: all var(--transition-fast);
+  text-decoration: none;
+
+  &:hover {
+    background: var(--color-bg-card-hover);
+    border-color: var(--color-border-bright);
+    transform: translateX(4px);
+
+    .social-icon-wrap {
+      background: rgba(var(--social-color), 0.15);
+    }
+  }
+}
+
+.social-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-sm);
+  background: rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--social-color, var(--color-text-primary));
+  flex-shrink: 0;
+  transition: background var(--transition-fast);
+}
+
+.social-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.social-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.social-url {
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-family: 'Roboto Mono', monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.social-arrow {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+// ─── Location ─────────────────────────────────────────────────────────────────
+.location-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.location-icon {
+  color: var(--color-accent);
+}
+
+.location-text {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+}
+
+// ─── Footer ───────────────────────────────────────────────────────────────────
+.footer-note {
+  text-align: center;
+  margin-top: var(--space-2xl);
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+
+  a {
+    color: var(--color-primary-light);
+
+    &:hover { color: var(--color-accent); }
+  }
+}

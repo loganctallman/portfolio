@@ -1,0 +1,68 @@
+<section id="resume" class="resume-section" aria-label="Resume">
+  <div class="section">
+    <span class="section-label">
+      <lucide-icon [img]="FileText" size="14"></lucide-icon>
+      Credentials
+    </span>
+    <h2 class="section-title">Resume</h2>
+    <p class="section-subtitle">
+      Download or view my full resume below. All experience, certifications,
+      and technical competencies in one place.
+    </p>
+
+    <!-- Action Buttons -->
+    <div class="resume-actions">
+      <a
+        mat-raised-button
+        class="download-btn"
+        [href]="resumePath"
+        download="Logan_Resume.pdf"
+        data-testid="resume-download-btn"
+        aria-label="Download resume as PDF"
+      >
+        <lucide-icon [img]="Download" size="16"></lucide-icon>
+        Download PDF
+      </a>
+      <a
+        mat-stroked-button
+        class="open-btn"
+        [href]="resumePath"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-testid="resume-open-btn"
+        aria-label="Open resume in new tab"
+      >
+        <lucide-icon [img]="ExternalLink" size="16"></lucide-icon>
+        Open in New Tab
+      </a>
+    </div>
+
+    <!-- PDF Viewer -->
+    <div class="pdf-container" aria-label="Resume PDF viewer">
+      <object
+        [data]="resumeSafeUrl"
+        type="application/pdf"
+        class="pdf-viewer"
+        data-testid="resume-pdf-viewer"
+        aria-label="Resume PDF document"
+      >
+        <!-- Fallback for browsers that don't support inline PDFs -->
+        <div class="pdf-fallback">
+          <lucide-icon [img]="FileText" size="48" class="fallback-icon"></lucide-icon>
+          <p class="fallback-title">PDF viewer not available</p>
+          <p class="fallback-desc">Your browser doesn't support inline PDF viewing.</p>
+          <a
+            mat-stroked-button
+            [href]="resumePath"
+            download="Logan_Resume.pdf"
+            data-testid="resume-fallback-download"
+            class="fallback-btn"
+          >
+            <lucide-icon [img]="Download" size="14"></lucide-icon>
+            Download Resume
+          </a>
+        </div>
+      </object>
+    </div>
+  </div>
+</section>

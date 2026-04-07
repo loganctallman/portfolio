@@ -319,33 +319,3 @@
   to   { opacity: 1; transform: translateY(0);   }
 }
 
-// ─── Scroll Indicator ─────────────────────────────────────────────────────────
-.scroll-indicator {
-  position: absolute;
-  bottom: var(--space-xl);
-  left: 50%;
-  transform: translateX(-50%);
-  background: none;
-  border: 1px solid var(--color-border-bright);
-  border-radius: var(--radius-pill);
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text-muted);
-  cursor: pointer;
-  transition: color var(--transition-fast), border-color var(--transition-fast);
-  animation: bounce 2s ease-in-out infinite;
-  z-index: 1;
-
-  &:hover {
-    color: var(--color-primary-light);
-    border-color: var(--color-primary);
-  }
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateX(-50%) translateY(0);    }
-  50%      { transform: translateX(-50%) translateY(-6px); }
-}

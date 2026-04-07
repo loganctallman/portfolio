@@ -48,8 +48,4 @@ describe('HeroComponent', () => {
     expect(chips.length).toBe(component.tags.length);
   });
 
-  it('should render scroll indicator', () => {
-    const indicator = fixture.nativeElement.querySelector('[data-testid="hero-scroll-indicator"]');
-    expect(indicator).toBeTruthy();
-  });
 });

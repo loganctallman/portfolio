@@ -48,11 +48,7 @@ test.describe('Hero Section', () => {
     await expect(link).toHaveAttribute('target', '_blank');
   });
 
-  test('scroll indicator button is visible', async ({ page }) => {
-    await expect(page.getByTestId('hero-scroll-indicator')).toBeVisible();
-  });
-
-  test('floating badges are visible', async ({ page }) => {
+test('floating badges are visible', async ({ page }) => {
     await expect(page.locator('.badge-top')).toBeVisible();
     await expect(page.locator('.badge-bottom')).toBeVisible();
   });

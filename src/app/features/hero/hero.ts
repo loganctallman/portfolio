@@ -11,7 +11,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import {
   LucideAngularModule,
   Download,
-  ArrowDown,
   Sparkles,
   Github,
   Linkedin,
@@ -26,7 +25,6 @@ import {
 })
 export class HeroComponent implements OnInit {
   readonly Download  = Download;
-  readonly ArrowDown = ArrowDown;
   readonly Sparkles  = Sparkles;
   readonly Github    = Github;
   readonly Linkedin  = Linkedin;

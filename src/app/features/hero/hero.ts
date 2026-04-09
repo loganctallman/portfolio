@@ -88,7 +88,41 @@ export class HeroComponent implements OnInit {
   topFlip    = signal(false);
   bottomFlip = signal(false);
 
+  // ─── Profile image carousel ───────────────────────────────────────────────
+  readonly captions = [
+    'Human Developer. Curious & Confident',
+    'Cyborg SDET. Precision Engineered',
+  ] as const;
+
+  activeImage    = signal<0 | 1>(0);
+  isFlipped      = signal(false);
+  carouselDone   = signal(false);
+
+  private carouselTimeout: ReturnType<typeof setTimeout> | null = null;
+
+  private runCarousel(): void {
+    this.activeImage.set(0);
+    this.carouselDone.set(false);
+    if (this.carouselTimeout) clearTimeout(this.carouselTimeout);
+    this.carouselTimeout = setTimeout(() => {
+      this.activeImage.set(1);
+      this.carouselDone.set(true);
+      this.carouselTimeout = null;
+    }, 4500);
+  }
+
+  replayCarousel(): void {
+    this.runCarousel();
+  }
+
   ngOnInit(): void {
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      this.runCarousel();
+      this.destroyRef.onDestroy(() => {
+        if (this.carouselTimeout) clearTimeout(this.carouselTimeout);
+      });
+    }
+
     let topI = 0;
     const topInterval = setInterval(() => {
       topI = (topI + 1) % this.topSkills.length;
@@ -109,6 +143,9 @@ export class HeroComponent implements OnInit {
     }, 1500);
     this.destroyRef.onDestroy(() => clearTimeout(bottomDelay));
   }
+
+  flipEnter(): void { this.isFlipped.set(true); }
+  flipLeave(): void { this.isFlipped.set(false); }
 
   scrollToSection(id: string): void {
     const el = document.getElementById(id);

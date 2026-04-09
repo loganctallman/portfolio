@@ -107,15 +107,33 @@
 }
 
 .hero-bio {
-  font-size: 1.1rem;
-  color: var(--color-text-secondary);
-  line-height: 1.75;
   max-width: 540px;
   margin-bottom: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  overflow: hidden;
 
   @media (max-width: 900px) {
     margin: 0 auto var(--space-lg);
   }
+}
+
+.bio-title {
+  font-size: clamp(0.68rem, 3.6vw, 1.15rem);
+  font-weight: 700;
+  line-height: 1.3;
+  white-space: nowrap;
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bio-body {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  line-height: 1.75;
 }
 
 // ─── Chips ────────────────────────────────────────────────────────────────────
@@ -214,17 +232,57 @@
 .hero-visual {
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
 
   @media (max-width: 900px) {
     order: -1;
   }
 }
 
-.avatar-ring {
+// ─── 3D Flip Container ────────────────────────────────────────────────────────
+.avatar-flip-wrapper {
+  perspective: 900px;
   width: 300px;
   height: 300px;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+
+  @media (max-width: 900px) {
+    width: 220px;
+    height: 220px;
+  }
+
+  &.flipped .avatar-flip-inner {
+    transform: rotateY(180deg);
+  }
+}
+
+.avatar-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.avatar-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.avatar-face-back {
+  transform: rotateY(180deg);
+}
+
+// ─── Spinning Ring (shared by both faces) ─────────────────────────────────────
+.avatar-ring {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   background: conic-gradient(
     from 0deg,
@@ -236,44 +294,123 @@
     var(--color-primary) 100%
   );
   padding: 3px;
-  animation: rotate 8s linear infinite;
-
-  @media (max-width: 900px) {
-    width: 220px;
-    height: 220px;
-  }
 }
 
-@keyframes rotate {
-  from { transform: rotate(0deg);   }
-  to   { transform: rotate(360deg); }
+.avatar-ring--cyborg {
+  background: conic-gradient(
+    from 0deg,
+    var(--color-accent) 0%,
+    rgba(6, 182, 212, 0.4) 40%,
+    transparent 40%,
+    transparent 70%,
+    var(--color-accent) 70%,
+    var(--color-accent) 100%
+  );
 }
 
+// ─── Circular mask + carousel images ─────────────────────────────────────────
 .avatar-placeholder {
+  position: relative;
   width: 100%;
   height: 100%;
   border-radius: 50%;
   background: var(--color-bg-surface);
-  display: flex;
-  align-items: center;
-  justify-content: center;
   border: 4px solid var(--color-bg-base);
   overflow: hidden;
 }
 
-.avatar-initials {
-  font-size: 5rem;
-  font-weight: 800;
+.avatar-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 2s ease;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+
+  &.active {
+    opacity: 1;
+  }
+}
+
+// ─── Caption crossfade ────────────────────────────────────────────────────────
+.avatar-caption {
+  position: relative;
+  height: 2.8rem;
+  width: 300px;
+  text-align: center;
+  margin-top: var(--space-sm);
+
+  @media (max-width: 900px) {
+    width: 220px;
+  }
+}
+
+.caption-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  opacity: 0;
+  transition: opacity 2s ease;
+  pointer-events: none;
+
+  &.active {
+    opacity: 1;
+  }
+}
+
+.caption-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-accent) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-.avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.caption-sub {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+
+// Per-identity glow via filter (works with gradient text unlike text-shadow)
+.caption-human {
+  filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.5));
+}
+
+.caption-cyborg {
+  filter: drop-shadow(0 0 8px rgba(6, 182, 212, 0.5));
+
+  .caption-title {
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 0.08em;
+  }
+
+  .caption-sub {
+    font-family: 'Courier New', Courier, monospace;
+    letter-spacing: 0.06em;
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+}
+
+// ─── Reduced motion overrides ─────────────────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  // Carousel stays frozen at first image (interval skipped in TS)
+  // Flip still works — it's opt-in, user-initiated
+  .avatar-flip-inner {
+    transition: transform 0.15s ease;
+  }
 }
 
 // ─── Floating Badges ──────────────────────────────────────────────────────────
@@ -292,8 +429,8 @@
   min-width: 190px;
 }
 
-.badge-top    { top: 10px; right: -20px; animation-delay: 0s;   }
-.badge-bottom { bottom: 20px; left: -30px; animation-delay: 1.5s; }
+.badge-top    { top: -20px; right: -20px; animation-delay: 0s;   }
+.badge-bottom { bottom: 50px; left: -30px; animation-delay: 1.5s; }
 
 @media (max-width: 480px) {
   .badge-top    { right: 0; }

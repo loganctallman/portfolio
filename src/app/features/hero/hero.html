@@ -19,11 +19,14 @@
         <span class="gradient-text">and break it on purpose.</span>
       </h1>
 
-      <p class="hero-bio">
-        Software Design &amp; Senior QA Engineer specializing in end-to-end automation,
-        performance testing, and building resilient full-stack applications.
-        I write the tests that find the bugs before your users do.
-      </p>
+      <div class="hero-bio">
+        <p class="bio-title">SDET, Full Stack Developer &amp; Senior QA Engineer</p>
+        <p class="bio-body">
+          Specializing in end-to-end automation, performance testing, and building
+          resilient full-stack applications. I write the tests that find the bugs
+          before your users do.
+        </p>
+      </div>
 
       <!-- Skill chips -->
       <div class="hero-chips" aria-label="Core skills">
@@ -85,11 +88,63 @@
 
     <!-- Headshot / Avatar Side -->
     <div class="hero-visual" aria-label="Profile photo">
-      <div class="avatar-ring">
-        <div class="avatar-placeholder">
-          <span class="avatar-initials">L</span>
-          <!-- Replace with: <img src="assets/headshot.jpg" alt="Logan's headshot" class="avatar-img" /> -->
+
+      <!-- 3D flip wrapper — hover reveals cyborg back face; click toggles lock -->
+      <div
+        class="avatar-flip-wrapper"
+        [class.flipped]="isFlipped()"
+        (mouseenter)="flipEnter()"
+        (mouseleave)="flipLeave()"
+        (click)="replayCarousel()"
+        role="img"
+        [attr.aria-label]="activeImage() === 0 ? captions[0] : captions[1]"
+      >
+        <!-- Front face: auto-carousel between both images -->
+        <div class="avatar-face avatar-face-front">
+          <div class="avatar-ring">
+            <div class="avatar-placeholder">
+              <img
+                src="circ.png"
+                class="avatar-img"
+                [class.active]="activeImage() === 0"
+                alt="Logan Tallman"
+                loading="eager"
+              />
+              <img
+                src="circbot.png"
+                class="avatar-img"
+                [class.active]="activeImage() === 1"
+                alt="Logan Tallman as Cyborg SDET"
+                loading="eager"
+              />
+            </div>
+          </div>
         </div>
+
+        <!-- Back face: always circbot — revealed on flip -->
+        <div class="avatar-face avatar-face-back" aria-hidden="true">
+          <div class="avatar-ring avatar-ring--cyborg">
+            <div class="avatar-placeholder">
+              <img
+                src="circbot.png"
+                class="avatar-img active"
+                alt=""
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Caption crossfades below the circle -->
+      <div class="avatar-caption" aria-live="polite" aria-atomic="true">
+        <span class="caption-text caption-human" [class.active]="activeImage() === 0">
+          <span class="caption-title">Human Developer</span>
+          <span class="caption-sub">Curious &amp; Confident</span>
+        </span>
+        <span class="caption-text caption-cyborg" [class.active]="activeImage() === 1">
+          <span class="caption-title">Cyborg SDET</span>
+          <span class="caption-sub">Precision Engineered</span>
+        </span>
       </div>
 
       <!-- Floating badges -->

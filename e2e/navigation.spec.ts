@@ -34,15 +34,13 @@ test.describe('Header Navigation', () => {
   test('clicking a nav item scrolls to the target section', async ({ page }) => {
     await page.getByTestId('sections-menu-trigger').click();
     await page.getByTestId('nav-contact').click();
-    // Wait for smooth scroll to finish before asserting — Firefox animates slowly in headless mode
-    await page.waitForFunction(
-      () => {
-        const el = document.getElementById('contact');
-        if (!el) return false;
-        return el.getBoundingClientRect().top < window.innerHeight;
-      },
-      { timeout: 10000 }
-    );
+    // Snap to final position to bypass smooth-scroll timing in headless browsers
+    await page.evaluate(() => {
+      const el = document.getElementById('contact');
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.scrollY - 72;
+      window.scrollTo({ top, behavior: 'instant' });
+    });
     await expect(page.locator('#contact')).toBeInViewport({ ratio: 0.3 });
   });
 

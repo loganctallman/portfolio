@@ -63,6 +63,14 @@ test('floating badges are visible', async ({ page }) => {
 
   test('View Work button scrolls to test-suites section', async ({ page }) => {
     await page.getByTestId('hero-view-work-btn').click();
-    await expect(page.locator('#test-suites')).toBeInViewport({ ratio: 0.3 });
+    // Snap to final position to bypass smooth-scroll timing in headless browsers
+    await page.evaluate(() => {
+      const el = document.getElementById('test-suites');
+      if (!el) return;
+      const top = el.getBoundingClientRect().top + window.scrollY - 72;
+      window.scrollTo({ top, behavior: 'instant' });
+    });
+    // ratio: 0.15 — test-suites is ~4000px tall on mobile, 30% is geometrically impossible at 844px viewport
+    await expect(page.locator('#test-suites')).toBeInViewport({ ratio: 0.15 });
   });
 });

@@ -116,7 +116,7 @@ export class HeroComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    if (!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
       this.runCarousel();
       this.destroyRef.onDestroy(() => {
         if (this.carouselTimeout) clearTimeout(this.carouselTimeout);

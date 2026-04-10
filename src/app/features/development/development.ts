@@ -67,23 +67,23 @@ export class DevelopmentComponent {
       ],
       testingStrategy: {
         summary:
-          'Full testing pyramid from isolated service mocks to full E2E chat flow validation.',
+          'Every push to the repository must pass 139 tests across three suites before Vercel will accept a deployment.',
         layers: [
           {
-            label: 'Unit Tests (Jasmine)',
-            detail: 'ChatService and StateService tested with mocked HttpClient. 90%+ coverage on business logic.',
+            label: 'Unit Tests (Vitest - 55)',
+            detail: 'Vitest unit tests cover the core chat logic, API proxy handling, and state management. All 55 must pass on every push.',
           },
           {
-            label: 'Component Tests (Cypress)',
-            detail: 'ChatInputComponent and MessageListComponent tested in isolation with mount().',
+            label: 'API Integration Tests (Vitest - 14)',
+            detail: 'Route handlers for /api/health (3 tests) and /api/chat (11 tests) are called directly with fs, ai, and @ai-sdk/openai mocked — no server required, full suite runs in under a second. Covers response schema, SSE content-type and Vercel AI data-stream headers, multi-turn message handling, conversation pruning to ≤10 messages, rate limiting (20 req limit, 429 on the 21st, independent IP tracking), and error handling including x-real-ip header fallback.',
           },
           {
-            label: 'E2E Tests (Playwright)',
-            detail: 'Full user journey: open chat → send message → receive streamed response → verify history persists.',
+            label: 'E2E Tests (Playwright — 70)',
+            detail: 'Full user journey coverage: open chat → send message → receive streamed response → verify conversation history persists across sessions.',
           },
           {
-            label: 'API Contract (Postman)',
-            detail: 'Newman collection validates OpenAI proxy endpoint schema, error handling, and rate-limit responses.',
+            label: 'CI/CD Gate (GitHub Actions → Vercel)',
+            detail: 'GitHub Actions runs the full test suite on every push. Deployment to Vercel is blocked unless all 139 tests pass — no exceptions.',
           },
         ],
       },

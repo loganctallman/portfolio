@@ -38,9 +38,9 @@ export class HeaderComponent {
   isScrolled = signal(false);
 
   readonly sections: NavSection[] = [
-    { label: 'Profile',      id: 'hero',        icon: 'person' },
-    { label: 'Test Suites',  id: 'test-suites', icon: 'science' },
+    { label: 'Profile',      id: 'hero',        icon: 'person'  },
     { label: 'Development',  id: 'development', icon: 'code'    },
+    { label: 'Test Suites',  id: 'test-suites', icon: 'science' },
     { label: 'Resume',       id: 'resume',      icon: 'description' },
     { label: 'Contact',      id: 'contact',     icon: 'mail'    },
   ];

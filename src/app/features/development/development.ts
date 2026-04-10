@@ -1,9 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
-  inject,
-  OnInit,
   signal,
   WritableSignal,
 } from '@angular/core';
@@ -11,7 +8,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatChipsModule } from '@angular/material/chips';
-import { LucideAngularModule, ExternalLink, Github, ChevronDown, FlaskConical, Code2 } from 'lucide-angular';
+import { LucideAngularModule, ExternalLink, Github, ChevronDown, FlaskConical, Code2, ChevronLeft, ChevronRight } from 'lucide-angular';
 
 export interface Project {
   id: string;
@@ -42,14 +39,14 @@ export interface Project {
   styleUrl: './development.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DevelopmentComponent implements OnInit {
-  readonly ExternalLink = ExternalLink;
-  readonly Github       = Github;
-  readonly ChevronDown  = ChevronDown;
-  readonly FlaskConical = FlaskConical;
-  readonly Code2        = Code2;
-
-  private destroyRef = inject(DestroyRef);
+export class DevelopmentComponent {
+  readonly ExternalLink  = ExternalLink;
+  readonly Github        = Github;
+  readonly ChevronDown   = ChevronDown;
+  readonly FlaskConical  = FlaskConical;
+  readonly Code2         = Code2;
+  readonly ChevronLeft   = ChevronLeft;
+  readonly ChevronRight  = ChevronRight;
 
   expandedProject = signal<string | null>(null);
 
@@ -221,6 +218,10 @@ export class DevelopmentComponent implements OnInit {
       liveUrl: 'https://logansportfolio.vercel.app',
       repoUrl: 'https://github.com/loganctallman/portfolio',
       screenshotAlt: 'Portfolio app screenshot',
+      images: [
+        'circ.png',
+        'circbot.png',
+      ],
       testingStrategy: {
         summary: 'Every component is independently testable by design, with data-testid hooks on all interactive elements.',
         layers: [
@@ -241,39 +242,31 @@ export class DevelopmentComponent implements OnInit {
     },
   ];
 
-  // One signal per project: 0 = placeholder, 1..n = images[index-1]
-  slideIndices: WritableSignal<number>[] = [];
-
-  ngOnInit(): void {
-    this.slideIndices = this.projects.map(() => signal(0));
-
-    this.projects.forEach((project, i) => {
-      if (!project.images?.length) return; // no images = static placeholder
-
-      const total = 1 + project.images.length;
-      const delay = i * 800;
-
-      const timer = setTimeout(() => {
-        const interval = setInterval(() => {
-          this.slideIndices[i].update(curr => (curr + 1) % total);
-        }, 5000);
-        this.destroyRef.onDestroy(() => clearInterval(interval));
-      }, delay);
-
-      this.destroyRef.onDestroy(() => clearTimeout(timer));
-    });
-  }
+  // One signal per project: index into project.images[]
+  slideIndices: WritableSignal<number>[] = this.projects.map(() => signal(0));
 
   getSlideIndex(projectIndex: number): number {
     return this.slideIndices[projectIndex]?.() ?? 0;
   }
 
   totalSlides(project: Project): number {
-    return 1 + (project.images?.length ?? 0);
+    return project.images?.length ?? 0;
   }
 
   goToSlide(projectIndex: number, slideIndex: number): void {
     this.slideIndices[projectIndex]?.set(slideIndex);
+  }
+
+  nextSlide(projectIndex: number): void {
+    const total = this.projects[projectIndex].images?.length ?? 0;
+    if (total < 2) return;
+    this.slideIndices[projectIndex]?.update(curr => (curr + 1) % total);
+  }
+
+  prevSlide(projectIndex: number): void {
+    const total = this.projects[projectIndex].images?.length ?? 0;
+    if (total < 2) return;
+    this.slideIndices[projectIndex]?.update(curr => (curr - 1 + total) % total);
   }
 
   toggleExpand(id: string): void {

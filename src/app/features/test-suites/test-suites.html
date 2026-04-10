@@ -26,30 +26,14 @@
             [attr.aria-label]="tool.screenshotAlt"
             [attr.aria-roledescription]="'carousel'"
           >
-            <!-- Film-strip track: all slides sit side-by-side, track slides left -->
-            <div
-              class="carousel-track"
-              [style.transform]="'translateX(-' + (getSlideIndex(toolIdx) * 100) + '%)'"
-            >
-              <!-- Slide 0: placeholder -->
-              <div class="carousel-slide" aria-hidden="true">
-                <div class="screenshot-placeholder">
-                  <div class="placeholder-dots">
-                    <span></span><span></span><span></span>
-                  </div>
-                  <div class="placeholder-bar wide"></div>
-                  <div class="placeholder-bar medium"></div>
-                  <div class="placeholder-bar narrow"></div>
-                  <div class="placeholder-grid">
-                    <div></div><div></div><div></div>
-                    <div></div><div></div><div></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Slides 1..n: real screenshots -->
-              @for (img of tool.images; track img) {
-                <div class="carousel-slide">
+            <!-- Crossfade stack -->
+            <div class="carousel-track">
+              @for (img of tool.images; track img; let imgIdx = $index) {
+                <div
+                  class="carousel-slide"
+                  [class.active]="getSlideIndex(toolIdx) === imgIdx"
+                  (click)="openZoom(img)"
+                >
                   <img
                     [src]="img"
                     [alt]="tool.screenshotAlt"
@@ -65,19 +49,37 @@
               <span class="tool-category-badge">{{ tool.category }}</span>
             </div>
 
-            <!-- Dot indicators -->
-            <div class="carousel-dots" role="tablist" [attr.aria-label]="tool.name + ' slide indicators'">
-              @for (slide of [].constructor(totalSlides(tool)); track $index) {
-                <button
-                  class="dot"
-                  role="tab"
-                  [class.active]="getSlideIndex(toolIdx) === $index"
-                  (click)="goToSlide(toolIdx, $index)"
-                  [attr.aria-selected]="getSlideIndex(toolIdx) === $index"
-                  [attr.aria-label]="'Go to slide ' + ($index + 1)"
-                ></button>
-              }
-            </div>
+            <!-- Prev / Next arrows -->
+            @if (tool.images.length > 1) {
+              <button
+                class="carousel-arrow carousel-arrow--prev"
+                (click)="prevSlide(toolIdx); $event.stopPropagation()"
+                aria-label="Previous image"
+              >
+                <lucide-icon [img]="ChevronLeft" size="16"></lucide-icon>
+              </button>
+              <button
+                class="carousel-arrow carousel-arrow--next"
+                (click)="nextSlide(toolIdx); $event.stopPropagation()"
+                aria-label="Next image"
+              >
+                <lucide-icon [img]="ChevronRight" size="16"></lucide-icon>
+              </button>
+
+              <!-- Dot indicators -->
+              <div class="carousel-dots" role="tablist" [attr.aria-label]="tool.name + ' slide indicators'">
+                @for (img of tool.images; track img; let dotIdx = $index) {
+                  <button
+                    class="dot"
+                    role="tab"
+                    [class.active]="getSlideIndex(toolIdx) === dotIdx"
+                    (click)="goToSlide(toolIdx, dotIdx)"
+                    [attr.aria-selected]="getSlideIndex(toolIdx) === dotIdx"
+                    [attr.aria-label]="'Go to slide ' + (dotIdx + 1)"
+                  ></button>
+                }
+              </div>
+            }
           </div>
           <!-- ── / Carousel ───────────────────────────────────────────── -->
 
@@ -102,21 +104,55 @@
           </mat-card-content>
 
           <mat-card-actions class="card-actions">
-            <a
-              mat-stroked-button
-              [href]="tool.link"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="tool-link-btn"
-              [attr.data-testid]="'tool-link-' + tool.id"
-              [attr.aria-label]="'View ' + tool.name + ' documentation'"
-            >
-              <lucide-icon [img]="ExternalLink" size="14"></lucide-icon>
-              View Docs
-            </a>
+            @if (tool.links?.length) {
+              @for (l of tool.links!; track l.url) {
+                <a
+                  mat-stroked-button
+                  [href]="l.url"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="tool-link-btn tool-link-btn--multi"
+                  [style.--btn-color]="l.color"
+                  [attr.data-testid]="'tool-link-' + tool.id + '-' + $index"
+                  [attr.aria-label]="'View ' + l.label"
+                >
+                  <lucide-icon [img]="ExternalLink" size="14"></lucide-icon>
+                  {{ l.label }}
+                </a>
+              }
+            } @else {
+              <a
+                mat-stroked-button
+                [href]="tool.link"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="tool-link-btn"
+                [attr.data-testid]="'tool-link-' + tool.id"
+                [attr.aria-label]="'View ' + tool.name + ' documentation'"
+              >
+                <lucide-icon [img]="ExternalLink" size="14"></lucide-icon>
+                View Docs
+              </a>
+            }
           </mat-card-actions>
         </mat-card>
       }
     </div>
   </div>
+  <!-- Lightbox overlay -->
+  @if (zoomedImage()) {
+    <div
+      class="zoom-overlay"
+      (click)="closeZoom()"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Zoomed screenshot — click to close"
+    >
+      <img
+        [src]="zoomedImage()!"
+        class="zoom-img"
+        alt="Zoomed screenshot"
+      />
+    </div>
+  }
 </section>

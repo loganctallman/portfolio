@@ -23,7 +23,9 @@ test.describe('Test Suites Section', () => {
     });
 
     test(`"${id}" has a View Docs link that opens in new tab`, async ({ page }) => {
-      const link = page.getByTestId(`tool-link-${id}`);
+      // Use prefix match to handle single-link (tool-link-{id}) and
+      // multi-link (tool-link-{id}-0, tool-link-{id}-1) cards
+      const link = page.locator(`[data-testid^="tool-link-${id}"]`).first();
       await expect(link).toBeVisible();
       await expect(link).toHaveAttribute('target', '_blank');
       await expect(link).toHaveAttribute('href', /https?:\/\//);

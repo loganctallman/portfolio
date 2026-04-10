@@ -45,36 +45,66 @@
 // ─── Screenshot Mockup ────────────────────────────────────────────────────────
 .project-screenshot {
   background: var(--color-bg-base);
-  display: flex;
-  align-items: stretch;
-  min-height: 260px;
-  position: relative;
   overflow: hidden;
+}
+
+// Wraps track + arrows so arrows anchor to the image area, not the full card height
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  line-height: 0; // prevent phantom gap below images
 }
 
 // ─── Carousel ─────────────────────────────────────────────────────────────────
 .carousel-track {
-  display: flex;
+  display: grid;
   width: 100%;
-  transition: transform 0.65s cubic-bezier(0.77, 0, 0.175, 1);
-  will-change: transform;
 }
 
 .carousel-slide {
-  flex: 0 0 100%;
-  min-height: 260px;
+  grid-area: 1 / 1;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+
+  &.active {
+    opacity: 1;
+  }
 }
 
 .carousel-img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top center;
+  height: auto;
   display: block;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-sm);
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+
+  &:hover {
+    background: rgba(99, 102, 241, 0.65);
+    border-color: var(--color-primary);
+  }
+
+  &--prev { left: var(--space-sm); }
+  &--next { right: var(--space-sm); }
 }
 
 .carousel-dots {

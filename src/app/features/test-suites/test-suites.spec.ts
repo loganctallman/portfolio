@@ -40,11 +40,13 @@ describe('TestSuitesComponent', () => {
     expect(ids).toContain('github-actions');
   });
 
-  it('should render a docs link for each tool', () => {
-    const links = fixture.nativeElement.querySelectorAll('[data-testid^="tool-link-"]');
-    expect(links.length).toBe(6);
-    links.forEach((link: HTMLAnchorElement) => {
-      expect(link.getAttribute('target')).toBe('_blank');
+  it('should render at least one docs link per tool, all opening in new tab', () => {
+    component.tools.forEach(tool => {
+      const links = fixture.nativeElement.querySelectorAll(`[data-testid^="tool-link-${tool.id}"]`);
+      expect(links.length).toBeGreaterThanOrEqual(1);
+      Array.from<HTMLAnchorElement>(links).forEach(link => {
+        expect(link.getAttribute('target')).toBe('_blank');
+      });
     });
   });
 

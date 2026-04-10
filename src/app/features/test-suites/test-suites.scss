@@ -52,20 +52,33 @@
   flex-shrink: 0;
 }
 
-// The horizontal film-strip — all slides side by side
+// Crossfade stack — all slides occupy the same space, opacity toggles
 .carousel-track {
-  display: flex;
+  position: relative;
+  width: 100%;
   height: 100%;
-  // Each slide is 100% of the viewport width of the container
-  transition: transform 0.65s cubic-bezier(0.77, 0, 0.175, 1);
-  will-change: transform;
 }
 
-// Each slide occupies exactly the card width
 .carousel-slide {
-  flex: 0 0 100%;
-  height: 100%;
+  position: absolute;
+  inset: 0;
   overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+
+  &.active {
+    opacity: 1;
+  }
+}
+
+// Slides are clickable to zoom; inactive slides must not intercept clicks
+.carousel-slide {
+  pointer-events: none;
+
+  &.active {
+    pointer-events: auto;
+    cursor: zoom-in;
+  }
 }
 
 // Real screenshot image — fill the slide, anchor to top so UI is always visible
@@ -75,7 +88,8 @@
   object-fit: cover;
   object-position: top center;
   display: block;
-  // Subtle scale-in as the slide settles — driven by the track transition end
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 // ─── Placeholder (slide 0) ────────────────────────────────────────────────────
@@ -150,6 +164,34 @@
   border: 1px solid var(--tool-color, var(--color-primary));
 }
 
+// ─── Arrow Buttons ────────────────────────────────────────────────────────────
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-sm);
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--transition-fast), border-color var(--transition-fast);
+
+  &:hover {
+    background: var(--tool-accent, rgba(99, 102, 241, 0.65));
+    border-color: var(--tool-color, var(--color-primary));
+  }
+
+  &--prev { left: var(--space-xs); }
+  &--next { right: var(--space-xs); }
+}
+
 // ─── Dot Indicators ───────────────────────────────────────────────────────────
 .carousel-dots {
   position: absolute;
@@ -182,6 +224,33 @@
     background: rgba(255, 255, 255, 0.6);
     transform: scale(1.3);
   }
+}
+
+// ─── Lightbox Overlay ─────────────────────────────────────────────────────────
+.zoom-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: zoom-out;
+  animation: zoomFadeIn 0.2s ease;
+}
+
+.zoom-img {
+  max-width: 92vw;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7);
+}
+
+@keyframes zoomFadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1);    }
 }
 
 // ─── Card Header ──────────────────────────────────────────────────────────────
@@ -262,5 +331,17 @@ mat-card-header {
 
   &:hover {
     background: var(--tool-accent, rgba(99,102,241,0.12)) !important;
+  }
+
+  // Per-link brand color when multiple links are present
+  &--multi {
+    color: var(--btn-color) !important;
+    border-color: color-mix(in srgb, var(--btn-color) 35%, transparent) !important;
+    font-size: 0.75rem !important;
+
+    &:hover {
+      background: color-mix(in srgb, var(--btn-color) 12%, transparent) !important;
+      border-color: color-mix(in srgb, var(--btn-color) 60%, transparent) !important;
+    }
   }
 }

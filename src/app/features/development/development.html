@@ -23,60 +23,74 @@
             [attr.aria-label]="project.screenshotAlt"
             [attr.aria-roledescription]="project.images?.length ? 'carousel' : null"
           >
-            <!-- Film-strip track -->
-            <div
-              class="carousel-track"
-              [style.transform]="'translateX(-' + (getSlideIndex(projIdx) * 100) + '%)'"
-            >
-              <!-- Slide 0: mockup placeholder -->
-              <div class="carousel-slide" aria-hidden="true">
-                <div class="screenshot-mockup">
-                  <div class="mockup-bar">
-                    <span class="dot r"></span>
-                    <span class="dot y"></span>
-                    <span class="dot g"></span>
-                    <div class="mockup-url-bar">
-                      <span>{{ project.liveUrl }}</span>
-                    </div>
-                  </div>
-                  <div class="mockup-body">
-                    <div class="mockup-line l80"></div>
-                    <div class="mockup-line l60"></div>
-                    <div class="mockup-line l90"></div>
-                    <div class="mockup-grid-2">
-                      <div></div><div></div>
-                    </div>
-                    <div class="mockup-line l50"></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Slides 1..n: real screenshots -->
-              @for (img of project.images; track img) {
-                <div class="carousel-slide">
-                  <img
-                    [src]="img"
-                    [alt]="project.screenshotAlt"
-                    class="carousel-img"
-                    loading="lazy"
-                  />
-                </div>
-              }
-            </div>
-
-            <!-- Dot indicators (only when there are real images) -->
             @if (project.images?.length) {
-              <div class="carousel-dots" role="tablist">
-                @for (slide of [].constructor(totalSlides(project)); track $index; let dotIdx = $index) {
+              <div class="carousel-wrapper">
+                <!-- Crossfade stack -->
+                <div class="carousel-track">
+                  @for (img of project.images; track img; let imgIdx = $index) {
+                    <div class="carousel-slide" [class.active]="getSlideIndex(projIdx) === imgIdx">
+                      <img
+                        [src]="img"
+                        [alt]="project.screenshotAlt"
+                        class="carousel-img"
+                        loading="lazy"
+                      />
+                    </div>
+                  }
+                </div>
+
+                <!-- Prev / Next arrows (only when more than 1 image) -->
+                @if ((project.images?.length ?? 0) > 1) {
                   <button
-                    class="dot"
-                    role="tab"
-                    [class.active]="getSlideIndex(projIdx) === dotIdx"
-                    (click)="goToSlide(projIdx, dotIdx)"
-                    [attr.aria-selected]="getSlideIndex(projIdx) === dotIdx"
-                    [attr.aria-label]="'Go to slide ' + (dotIdx + 1)"
-                  ></button>
+                    class="carousel-arrow carousel-arrow--prev"
+                    (click)="prevSlide(projIdx)"
+                    aria-label="Previous image"
+                  >
+                    <lucide-icon [img]="ChevronLeft" size="18"></lucide-icon>
+                  </button>
+                  <button
+                    class="carousel-arrow carousel-arrow--next"
+                    (click)="nextSlide(projIdx)"
+                    aria-label="Next image"
+                  >
+                    <lucide-icon [img]="ChevronRight" size="18"></lucide-icon>
+                  </button>
+
+                  <!-- Dot indicators -->
+                  <div class="carousel-dots" role="tablist">
+                    @for (img of project.images; track img; let dotIdx = $index) {
+                      <button
+                        class="dot"
+                        role="tab"
+                        [class.active]="getSlideIndex(projIdx) === dotIdx"
+                        (click)="goToSlide(projIdx, dotIdx)"
+                        [attr.aria-selected]="getSlideIndex(projIdx) === dotIdx"
+                        [attr.aria-label]="'Go to slide ' + (dotIdx + 1)"
+                      ></button>
+                    }
+                  </div>
                 }
+              </div>
+            } @else {
+              <!-- No images: static mockup placeholder -->
+              <div class="screenshot-mockup">
+                <div class="mockup-bar">
+                  <span class="dot r"></span>
+                  <span class="dot y"></span>
+                  <span class="dot g"></span>
+                  <div class="mockup-url-bar">
+                    <span>{{ project.liveUrl }}</span>
+                  </div>
+                </div>
+                <div class="mockup-body">
+                  <div class="mockup-line l80"></div>
+                  <div class="mockup-line l60"></div>
+                  <div class="mockup-line l90"></div>
+                  <div class="mockup-grid-2">
+                    <div></div><div></div>
+                  </div>
+                  <div class="mockup-line l50"></div>
+                </div>
               </div>
             }
           </div>

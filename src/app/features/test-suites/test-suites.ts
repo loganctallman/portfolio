@@ -1,16 +1,13 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
-  inject,
-  OnInit,
   signal,
   WritableSignal,
 } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatButtonModule } from '@angular/material/button';
-import { LucideAngularModule, ExternalLink, FlaskConical } from 'lucide-angular';
+import { LucideAngularModule, ExternalLink, FlaskConical, ChevronLeft, ChevronRight } from 'lucide-angular';
 
 export interface TestTool {
   id: string;
@@ -22,6 +19,7 @@ export interface TestTool {
   highlights: string[];
   screenshotAlt: string;
   link: string;
+  links?: { label: string; url: string; color: string }[];
   images: string[]; // paths relative to public root
 }
 
@@ -32,11 +30,11 @@ export interface TestTool {
   styleUrl: './test-suites.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TestSuitesComponent implements OnInit {
-  readonly ExternalLink = ExternalLink;
-  readonly FlaskConical = FlaskConical;
-
-  private destroyRef = inject(DestroyRef);
+export class TestSuitesComponent {
+  readonly ExternalLink  = ExternalLink;
+  readonly FlaskConical  = FlaskConical;
+  readonly ChevronLeft   = ChevronLeft;
+  readonly ChevronRight  = ChevronRight;
 
   readonly tools: TestTool[] = [
     {
@@ -83,19 +81,25 @@ export class TestSuitesComponent implements OnInit {
     },
     {
       id: 'junit',
-      name: 'JUnit 5',
+      name: 'JUnit 5 / Vitest',
       category: 'Unit / Integration',
       color: '#C71A36',
       accentColor: 'rgba(199,26,54,0.12)',
       description:
-        'Java unit and integration tests using JUnit 5 with Mockito for mock injection. Covers service layer logic, repository interactions, and edge cases.',
-      highlights: ['Mockito Mocks', 'Parameterized', 'Spring Boot', 'Coverage Reports'],
-      screenshotAlt: 'JUnit 5 test results screenshot',
+        'Unit and integration testing across Java and TypeScript stacks. JUnit 5 with Mockito covers Spring Boot service logic and repository interactions; Vitest handles fast, ESM-native component and utility testing in modern frontend projects.',
+      highlights: ['Mockito Mocks', 'Parameterized Tests', 'Spring Boot', 'ESM-Native', 'Component Testing', 'Coverage Reports'],
+      screenshotAlt: 'JUnit 5 and Vitest test results screenshot',
       link: 'https://junit.org',
+      links: [
+        { label: 'JUnit 5 Docs', url: 'https://junit.org/junit5/docs/current/user-guide/', color: '#C71A36' },
+        { label: 'Vitest Docs',  url: 'https://vitest.dev/guide/',                         color: '#729B1B' },
+      ],
       images: [
         'junit%205/junit1.jpg',
         'junit%205/junit2.jpg',
         'junit%205/junit3.jpg',
+        'junit%205/junit4.jpg',
+        'junit%205/junit5.jpg',
       ],
     },
     {
@@ -156,39 +160,35 @@ export class TestSuitesComponent implements OnInit {
     },
   ];
 
-  // One signal per tool: 0 = placeholder, 1..n = images[index-1]
-  slideIndices: WritableSignal<number>[] = [];
+  // One signal per tool: index into tool.images[]
+  slideIndices: WritableSignal<number>[] = this.tools.map(() => signal(0));
 
-  ngOnInit(): void {
-    this.slideIndices = this.tools.map(() => signal(0));
-
-    // Stagger each card's start time so they don't all flip simultaneously
-    this.tools.forEach((tool, i) => {
-      const total = 1 + tool.images.length;
-      const delay = i * 600; // 600ms stagger between cards
-
-      const timer = setTimeout(() => {
-        const interval = setInterval(() => {
-          this.slideIndices[i].update(curr => (curr + 1) % total);
-        }, 5000);
-
-        this.destroyRef.onDestroy(() => clearInterval(interval));
-      }, delay);
-
-      this.destroyRef.onDestroy(() => clearTimeout(timer));
-    });
-  }
+  zoomedImage = signal<string | null>(null);
 
   getSlideIndex(toolIndex: number): number {
     return this.slideIndices[toolIndex]?.() ?? 0;
   }
 
-  // Total slides = 1 placeholder + images
   totalSlides(tool: TestTool): number {
-    return 1 + tool.images.length;
+    return tool.images.length;
   }
 
   goToSlide(toolIndex: number, slideIndex: number): void {
     this.slideIndices[toolIndex]?.set(slideIndex);
+  }
+
+  openZoom(img: string): void  { this.zoomedImage.set(img); }
+  closeZoom(): void            { this.zoomedImage.set(null); }
+
+  nextSlide(toolIndex: number): void {
+    const total = this.tools[toolIndex].images.length;
+    if (total < 2) return;
+    this.slideIndices[toolIndex]?.update(curr => (curr + 1) % total);
+  }
+
+  prevSlide(toolIndex: number): void {
+    const total = this.tools[toolIndex].images.length;
+    if (total < 2) return;
+    this.slideIndices[toolIndex]?.update(curr => (curr - 1 + total) % total);
   }
 }

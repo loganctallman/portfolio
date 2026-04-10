@@ -109,14 +109,14 @@ export class DevelopmentComponent {
         layers: [
           {
             label: 'Unit & Integration Tests (JUnit 5)',
-            detail: 'Maintained a strict testing standard throughout development, ensuring every feature component includes a dedicated spec file with at least 3 test cases for 100% logic coverage.',
+            detail: 'Maintained a strict testing standard throughout development, ensuring every feature component includes a dedicated spec file with ≥3 test cases for 100% logic coverage.',
           },
           {
             label: 'Load & Performance Testing (JMeter)',
             detail: 'Validated system stability under a load of 500 concurrent users with a 60s ramp-up. Achieved a p99 latency < 300ms, verified through both local and CI-integrated stress tests.',
           },
           {
-            label: 'Automated E2E Regression Suite (Playwright)',
+            label: 'Automated E2E Regression Suite (Playwright - 60)',
             detail: 'Architected a robust CI/CD pipeline using GitHub Actions and Playwright, executing 60 automated E2E tests to validate critical math logic and UI workflows across multiple browser engines.',
           },
         ],
@@ -226,12 +226,12 @@ export class DevelopmentComponent {
         summary: 'Every component is independently testable by design, with data-testid hooks on all interactive elements.',
         layers: [
           {
-            label: 'Unit Tests (Vitest)',
+            label: 'Unit Tests (Vitest - 66)',
             detail: 'Each feature component has a spec file with ≥3 tests covering rendering, interaction, and data binding.',
           },
           {
-            label: 'E2E Tests (Playwright)',
-            detail: 'Smoke tests verify nav scroll, chat toggle, PDF viewer load, and contact form email trigger.',
+            label: 'E2E Tests (Playwright - 249)',
+            detail: 'Smoke tests verify nav scroll, chat toggle, PDF viewer load, contact form email trigger and the complete end-to-end user journey.',
           },
           {
             label: 'CI Workflow (GitHub Actions)',

@@ -105,10 +105,10 @@ export class DevelopmentComponent {
         'mathtrainer/mt3.jpg',
       ],
       testingStrategy: {
-        summary: 'This math skills testing tool is itself "thoroughly tested", built for reliability and backed by a comprehensive three-tier testing strategy.',
+        summary: 'This math skills testing tool is itself "thoroughly tested", built for reliability and backed by a comprehensive three-tier testing strategy with Lint → build → unit tests → E2E on every PR.',
         layers: [
           {
-            label: 'Unit & Integration Tests (JUnit 5)',
+            label: 'Unit & Integration Tests (Vitest - 72)',
             detail: 'Maintained a strict testing standard throughout development, ensuring every feature component includes a dedicated spec file with ≥3 test cases for 100% logic coverage.',
           },
           {
@@ -116,8 +116,8 @@ export class DevelopmentComponent {
             detail: 'Validated system stability under a load of 500 concurrent users with a 60s ramp-up. Achieved a p99 latency < 300ms, verified through both local and CI-integrated stress tests.',
           },
           {
-            label: 'Automated E2E Regression Suite (Playwright - 60)',
-            detail: 'Architected a robust CI/CD pipeline using GitHub Actions and Playwright, executing 60 automated E2E tests to validate critical math logic and UI workflows across multiple browser engines.',
+            label: 'Automated E2E Regression Suite (Playwright - 54)',
+            detail: 'Architected a robust CI/CD pipeline using GitHub Actions, Vitest and Playwright, executing 72 Unit tests and 54 automated E2E tests to validate critical math logic and UI workflows across multiple browser engines.',
           },
         ],
       },

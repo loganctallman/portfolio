@@ -59,7 +59,6 @@ test.describe('Mobile Responsive Layout', () => {
   test('development project cards stack on mobile', async ({ page }) => {
     await page.locator('#development').scrollIntoViewIfNeeded();
     const cards = page.locator('[data-testid^="project-card-"]');
-    await expect(cards).toHaveCount(5);
     // On mobile the grid collapses to 1 column — first and second cards should have same x position
     const firstBox = await cards.nth(0).boundingBox();
     const secondBox = await cards.nth(1).boundingBox();

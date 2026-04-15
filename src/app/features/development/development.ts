@@ -56,7 +56,7 @@ export class DevelopmentComponent {
       title: 'My Top 50',
       subtitle: 'Svelte PWA · Film Tracker',
       description:
-        'My Top 50 is a client-side Svelte PWA that tracks your 50 favourite films and alerts you when they hit streaming — with localStorage as the entire data layer and a Vercel serverless proxy bridging the TMDB API. The app\'s core logic — a 50-film cap with TMDB ID deduplication, a 24-hour TTL cache system, and a notification engine that crosses three independent localStorage keys — is a set of pure, deterministic functions engineered for deep test coverage across both online and offline modes.',
+        'My Top 50 is a client-side Svelte PWA that tracks your 50 favorite films and alerts you when they hit streaming — with localStorage as the entire data layer and a Vercel serverless proxy bridging the TMDB API. The app\'s core logic — a 50-film cap with TMDB ID deduplication, a 24-hour TTL cache system, and a notification engine that crosses three independent localStorage keys — is a set of pure, deterministic functions engineered for deep test coverage across both online and offline modes.',
       techStack: ['Svelte', 'Vite', 'PWA', 'Vitest', 'Playwright', 'TMDB API', 'Vercel', 'GitHub Actions'],
       liveUrl: 'https://top50films.vercel.app',
       repoUrl: 'https://github.com/loganctallman/Top50Films',

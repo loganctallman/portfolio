@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const PROJECT_IDS = ['logangpt', 'math-trainer', 'portfolio', 'xrshots', 'sourcecreative'];
+const PROJECT_IDS = ['mytop50', 'logangpt', 'math-trainer', 'portfolio', 'xrshots', 'sourcecreative'];
 
 test.describe('Development Section', () => {
   test.beforeEach(async ({ page }) => {
@@ -12,9 +12,9 @@ test.describe('Development Section', () => {
     await expect(page.locator('#development')).toContainText('Development Work');
   });
 
-  test('renders all 5 project cards', async ({ page }) => {
+  test('renders all project cards', async ({ page }) => {
     const cards = page.locator('[data-testid^="project-card-"]');
-    await expect(cards).toHaveCount(5);
+    await expect(cards).toHaveCount(PROJECT_IDS.length);
   });
 
   for (const id of PROJECT_IDS) {

@@ -52,6 +52,47 @@ export class DevelopmentComponent {
 
   readonly projects: Project[] = [
     {
+      id: 'mytop50',
+      title: 'My Top 50',
+      subtitle: 'Svelte PWA · Film Tracker',
+      description:
+        'My Top 50 is a client-side Svelte PWA that tracks your 50 favourite films and alerts you when they hit streaming — with localStorage as the entire data layer and a Vercel serverless proxy bridging the TMDB API. The app\'s core logic — a 50-film cap with TMDB ID deduplication, a 24-hour TTL cache system, and a notification engine that crosses three independent localStorage keys — is a set of pure, deterministic functions engineered for deep test coverage across both online and offline modes.',
+      techStack: ['Svelte', 'Vite', 'PWA', 'Vitest', 'Playwright', 'TMDB API', 'Vercel', 'GitHub Actions'],
+      liveUrl: 'https://top50films.vercel.app',
+      repoUrl: 'https://github.com/loganctallman/Top50Films',
+      screenshotAlt: 'My Top 50 application screenshot',
+      images: [
+        'mytop50/1.png',
+        'mytop50/2.png',
+        'mytop50/3.png',
+        'mytop50/4.png',
+        'mytop50/5.png',
+        'mytop50/6.png',
+      ],
+      testingStrategy: {
+        summary:
+          '311 tests across Vitest (199) and Playwright (112) validate every layer of the stack — from pure business-logic functions to full user journeys — with CI blocking deployment and Claude-powered QA agents analysing every failure and PR.',
+        layers: [
+          {
+            label: 'Unit & Logic Tests (Vitest — 199)',
+            detail: 'The suite targets the app\'s deterministic core: the 50-film cap with TMDB ID deduplication, a 24-hour TTL cache invalidation system, and the notification match engine that crosses three independent localStorage keys all have dedicated spec files with injected mock storage for 100% branch coverage. API proxy routes (genre browsing, search, providers, person lookup, suggestions) and Svelte component rendering — including streaming badges, modal lifecycle, and add/remove events — complete the unit layer.',
+          },
+          {
+            label: 'E2E Tests (Playwright — 112)',
+            detail: 'Full user lifecycle coverage from PWA onboarding through film discovery (genre browse, text search, director/actor mode, streaming filter), list management, streaming notifications, settings and provider persistence, and service worker cache behaviour — validating both fresh/stale cache logic and a full offline degradation path across five dedicated specs.',
+          },
+          {
+            label: 'Accessibility & Chaos Testing',
+            detail: 'axe-playwright runs WCAG 2.1 AA audits across every major page with animations frozen to prevent mid-opacity false positives. Chaos tests validate graceful degradation against 500s from all API endpoints, localStorage quota exhaustion, malformed TMDB responses, and rapid route navigation — the app must never crash regardless of infrastructure conditions.',
+          },
+          {
+            label: 'CI/CD Gate + AI QA Agents (GitHub Actions)',
+            detail: 'Unit and E2E jobs gate every push and PR; Vercel deployment is blocked until both pass. Claude-powered agents auto-post root-cause analysis as GitHub issues on CI failures, and leave severity-rated coverage gap reviews (CRITICAL / MODERATE / LOW) as PR comments whenever source, API, or test files change.',
+          },
+        ],
+      },
+    },
+    {
       id: 'logangpt',
       title: 'LoganGPT',
       subtitle: 'AI Chat Assistant',

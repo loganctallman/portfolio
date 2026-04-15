@@ -62,12 +62,12 @@ export class DevelopmentComponent {
       repoUrl: 'https://github.com/loganctallman/Top50Films',
       screenshotAlt: 'My Top 50 application screenshot',
       images: [
-        'mytop50/1.png',
-        'mytop50/2.png',
-        'mytop50/3.png',
-        'mytop50/4.png',
-        'mytop50/5.png',
-        'mytop50/6.png',
+        'mytop50/1.jpg',
+        'mytop50/2.jpg',
+        'mytop50/3.jpg',
+        'mytop50/4.jpg',
+        'mytop50/5.jpg',
+        'mytop50/6.jpg',
       ],
       testingStrategy: {
         summary:

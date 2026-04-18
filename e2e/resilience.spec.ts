@@ -292,17 +292,18 @@ test.describe('Resilience — Broken images (aborted image requests)', () => {
   test('carousel structure remains intact with broken images', async ({ page }) => {
     const dev = new DevelopmentPage(page);
     await dev.scrollToSection();
-    // Dots and arrows should still render
-    await expect(dev.carouselDots()).toBeVisible();
-    await expect(dev.carouselNextArrow()).toBeVisible();
-    await expect(dev.carouselPrevArrow()).toBeVisible();
+    // nth(1) = mytop50, which has .jpg images that are actually aborted by this suite's route
+    await expect(dev.carouselDots(1)).toBeVisible();
+    await expect(dev.carouselNextArrow(1)).toBeVisible();
+    await expect(dev.carouselPrevArrow(1)).toBeVisible();
   });
 
   test('carousel navigation still works with broken images', async ({ page }) => {
     const dev = new DevelopmentPage(page);
     await dev.scrollToSection();
-    await dev.carouselNextArrow().click();
-    await expect(dev.carouselDots().locator('.dot').nth(1)).toHaveAttribute('aria-selected', 'true');
+    // nth(1) = mytop50, which has .jpg images that are actually aborted by this suite's route
+    await dev.carouselNextArrow(1).click();
+    await expect(dev.carouselDots(1).locator('.dot').nth(1)).toHaveAttribute('aria-selected', 'true');
   });
 
   test('broken carousel images have non-empty alt text as fallback', async ({ page }) => {
@@ -320,7 +321,7 @@ test.describe('Resilience — Broken images (aborted image requests)', () => {
     page.on('pageerror', err => errors.push(err.message));
     const dev = new DevelopmentPage(page);
     await dev.scrollToSection();
-    await dev.carouselNextArrow().click();
+    await dev.carouselNextArrow(1).click();
     expect(errors).toHaveLength(0);
   });
 

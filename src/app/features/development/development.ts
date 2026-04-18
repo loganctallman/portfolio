@@ -270,19 +270,31 @@ export class DevelopmentComponent {
         'circbot.png',
       ],
       testingStrategy: {
-        summary: 'Every component is independently testable by design, with data-testid hooks on all interactive elements.',
+        summary: '561 tests across 5 layers — unit, E2E, accessibility, performance, and resilience — gate every deployment. The full strategy is documented in TESTING.md on GitHub.',
         layers: [
           {
-            label: 'Unit Tests (Vitest - 66)',
-            detail: 'Each feature component has a spec file with ≥3 tests covering rendering, interaction, and data binding.',
+            label: 'Unit Tests (Vitest — 66)',
+            detail: 'Every feature component has a dedicated spec file covering rendering, signal-driven state, and data binding. Coverage thresholds are enforced in CI: 85% statements, 78% branches, 87% lines. Angular\'s zoneless architecture means no fakeAsync ceremony — signals trigger change detection synchronously, keeping tests fast and straightforward.',
           },
           {
-            label: 'E2E Tests (Playwright - 249)',
-            detail: 'Smoke tests verify nav scroll, chat toggle, PDF viewer load, contact form email trigger and the complete end-to-end user journey.',
+            label: 'E2E Tests (Playwright — 120 tests × 3 browsers)',
+            detail: 'Full user journeys across Chromium, Firefox, and Mobile Chrome via a Page Object Model in e2e/pages/. POMs separate intent from selector implementation — specs read as dev.expandProject(\'logangpt\') rather than raw locator chains. When a data-testid changes, it\'s updated in one POM file, not hunted across seven specs.',
           },
           {
-            label: 'CI Workflow (GitHub Actions)',
-            detail: 'Lint → build → unit tests → E2E on every push. Deployment blocked on any failure.',
+            label: 'Accessibility (axe-core — 45 tests × 3 browsers)',
+            detail: 'WCAG 2.1 AA audits scoped per section so failures are localised, with animations frozen before each scan to eliminate mid-opacity false positives. Additional tests cover heading hierarchy (single H1, no skipped levels), ARIA attributes (aria-expanded, aria-controls, aria-modal), and full keyboard navigation — Tab order, Enter/Space activation, Escape to dismiss.',
+          },
+          {
+            label: 'Performance Budgets (Lighthouse CI + Angular build budgets)',
+            detail: 'Angular build budgets fail the build if the initial bundle exceeds 750 kB (current: 547 kB). Lighthouse CI then asserts a ≥80 performance score, ≥95 accessibility score, LCP ≤ 4 s, and CLS ≤ 0.1 against the production build — deployment is blocked on any error-severity failure.',
+          },
+          {
+            label: 'Resilience / Chaos (Playwright — 34 tests × 3 browsers)',
+            detail: 'Six scenario groups exercise conditions outside the happy path: LoganGPT iframe origin blocked via route.abort() (the portfolio must never crash if a dependent service is down), prefers-reduced-motion media emulation, viewport extremes at 320 px and 2560 px, rapid FAB and deep-dive toggle spam, and all carousel image requests aborted to prove the layout never collapses.',
+          },
+          {
+            label: 'CI/CD Gate (GitHub Actions)',
+            detail: 'Three parallel jobs — unit-tests, e2e, and performance — must all pass before the deploy job runs. PRs execute the full suite but never deploy. Playwright browsers are cached by package-lock hash so re-runs skip the install step. Test artifacts (coverage HTML, Playwright report, Lighthouse report) are retained for 14 days.',
           },
         ],
       },

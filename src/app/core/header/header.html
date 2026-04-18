@@ -1,7 +1,7 @@
 <header class="site-header" [class.scrolled]="isScrolled()">
   <mat-toolbar class="toolbar">
     <!-- Logo / Name -->
-    <a class="brand" data-testid="brand-logo" (click)="scrollTo('hero')" tabindex="0" aria-label="Scroll to top">
+    <a class="brand" href="#hero" data-testid="brand-logo" (click)="$event.preventDefault(); scrollTo('hero')" tabindex="0" aria-label="Scroll to top">
       <span class="brand-name">Logan<span class="brand-dot">.</span></span>
       <span class="brand-subtitle">SDET &amp; Dev</span>
     </a>

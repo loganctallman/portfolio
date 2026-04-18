@@ -1,84 +1,79 @@
 import { test, expect } from '@playwright/test';
+import { DevelopmentPage } from './pages';
 
 const PROJECT_IDS = ['mytop50', 'logangpt', 'math-trainer', 'portfolio', 'xrshots', 'sourcecreative'];
 
 test.describe('Development Section', () => {
+  let dev: DevelopmentPage;
+
   test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await page.locator('#development').scrollIntoViewIfNeeded();
+    dev = new DevelopmentPage(page);
+    await dev.goto();
+    await dev.scrollToSection();
   });
 
-  test('section heading is visible', async ({ page }) => {
-    await expect(page.locator('#development')).toContainText('Development Work');
+  test('section heading is visible', async () => {
+    await expect(dev.section).toContainText('Development Work');
   });
 
-  test('renders all project cards', async ({ page }) => {
-    const cards = page.locator('[data-testid^="project-card-"]');
-    await expect(cards).toHaveCount(PROJECT_IDS.length);
+  test('renders all project cards', async () => {
+    await expect(dev.allProjectCards).toHaveCount(PROJECT_IDS.length);
   });
 
   for (const id of PROJECT_IDS) {
-    test(`project card "${id}" is visible`, async ({ page }) => {
-      await expect(page.getByTestId(`project-card-${id}`)).toBeVisible();
+    test(`project card "${id}" is visible`, async () => {
+      await expect(dev.projectCard(id)).toBeVisible();
     });
 
-    test(`"${id}" has live and repo links`, async ({ page }) => {
-      await expect(page.getByTestId(`project-live-${id}`)).toBeVisible();
-      await expect(page.getByTestId(`project-repo-${id}`)).toBeVisible();
+    test(`"${id}" has live and repo links`, async () => {
+      await expect(dev.liveLink(id)).toBeVisible();
+      await expect(dev.repoLink(id)).toBeVisible();
     });
 
-    test(`"${id}" live link opens in new tab`, async ({ page }) => {
-      await expect(page.getByTestId(`project-live-${id}`)).toHaveAttribute('target', '_blank');
+    test(`"${id}" live link opens in new tab`, async () => {
+      await expect(dev.liveLink(id)).toHaveAttribute('target', '_blank');
     });
   }
 
-  test('deep dive panel is hidden by default', async ({ page }) => {
-    await expect(page.locator('#deep-dive-logangpt')).not.toBeAttached();
+  test('deep dive panel is hidden by default', async () => {
+    await expect(dev.deepDivePanel('logangpt')).not.toBeAttached();
   });
 
-  test('clicking deep dive toggle expands the panel', async ({ page }) => {
-    const toggle = page.getByTestId('deep-dive-toggle-logangpt');
-    await toggle.scrollIntoViewIfNeeded();
-    await toggle.click();
-    await expect(page.locator('#deep-dive-logangpt')).toBeVisible();
+  test('clicking deep dive toggle expands the panel', async () => {
+    await dev.expandProject('logangpt');
+    await expect(dev.deepDivePanel('logangpt')).toBeVisible();
   });
 
-  test('deep dive toggle has correct aria-expanded state', async ({ page }) => {
-    const toggle = page.getByTestId('deep-dive-toggle-logangpt');
+  test('deep dive toggle has correct aria-expanded state', async () => {
+    const toggle = dev.deepDiveToggle('logangpt');
     await toggle.scrollIntoViewIfNeeded();
     await expect(toggle).toHaveAttribute('aria-expanded', 'false');
     await toggle.click();
     await expect(toggle).toHaveAttribute('aria-expanded', 'true');
   });
 
-  test('clicking toggle again collapses the panel', async ({ page }) => {
-    const toggle = page.getByTestId('deep-dive-toggle-logangpt');
-    await toggle.scrollIntoViewIfNeeded();
-    await toggle.click();
-    await expect(page.locator('#deep-dive-logangpt')).toBeVisible();
-    await toggle.click();
-    await expect(page.locator('#deep-dive-logangpt')).not.toBeAttached();
+  test('clicking toggle again collapses the panel', async () => {
+    await dev.expandProject('logangpt');
+    await expect(dev.deepDivePanel('logangpt')).toBeVisible();
+    await dev.collapseProject('logangpt');
+    await expect(dev.deepDivePanel('logangpt')).not.toBeAttached();
   });
 
-  test('only one deep dive panel is open at a time', async ({ page }) => {
-    const firstToggle = page.getByTestId('deep-dive-toggle-logangpt');
-    const secondToggle = page.getByTestId('deep-dive-toggle-math-trainer');
-    await firstToggle.scrollIntoViewIfNeeded();
-    await firstToggle.click();
-    await secondToggle.scrollIntoViewIfNeeded();
-    await secondToggle.click();
-    await expect(page.locator('#deep-dive-logangpt')).not.toBeAttached();
-    await expect(page.locator('#deep-dive-math-trainer')).toBeVisible();
+  test('only one deep dive panel is open at a time', async () => {
+    await dev.expandProject('logangpt');
+    await dev.expandProject('math-trainer');
+    await expect(dev.deepDivePanel('logangpt')).not.toBeAttached();
+    await expect(dev.deepDivePanel('math-trainer')).toBeVisible();
   });
 
-  test('XR Shots project card is visible', async ({ page }) => {
-    const card = page.getByTestId('project-card-xrshots');
+  test('XR Shots project card is visible', async () => {
+    const card = dev.projectCard('xrshots');
     await card.scrollIntoViewIfNeeded();
     await expect(card).toContainText('XR Shots');
   });
 
-  test('Source Creative project card is visible', async ({ page }) => {
-    const card = page.getByTestId('project-card-sourcecreative');
+  test('Source Creative project card is visible', async () => {
+    const card = dev.projectCard('sourcecreative');
     await card.scrollIntoViewIfNeeded();
     await expect(card).toContainText('Source Creative');
   });

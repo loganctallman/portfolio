@@ -107,7 +107,10 @@ export class DevelopmentComponent {
       screenshotAlt: 'LoganGPT application screenshot',
       images: [
         'logangpt/lgpt.jpg',
+        'logangpt/lgpt1.jpg',
         'logangpt/lgpt2.jpg',
+        'logangpt/lgpt3.jpg',
+        'logangpt/lgpt4.jpg',
       ],
       testingStrategy: {
         summary:

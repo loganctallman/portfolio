@@ -68,6 +68,9 @@ export class DevelopmentComponent {
         'mytop50/4.jpg',
         'mytop50/5.jpg',
         'mytop50/6.jpg',
+        'mytop50/7.jpg',
+        'mytop50/8.jpg',
+        'mytop50/9.jpg',
       ],
       testingStrategy: {
         summary:
@@ -144,6 +147,9 @@ export class DevelopmentComponent {
         'mathtrainer/mt1.jpg',
         'mathtrainer/mt2.jpg',
         'mathtrainer/mt3.jpg',
+        'mathtrainer/mt4.jpg',
+        'mathtrainer/mt5.jpg',
+        'mathtrainer/mt6.jpg',
       ],
       testingStrategy: {
         summary: 'This math skills testing tool is itself "thoroughly tested", built for reliability and backed by a comprehensive three-tier testing strategy with Lint → build → unit tests → E2E on every PR.',

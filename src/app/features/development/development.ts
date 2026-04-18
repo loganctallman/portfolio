@@ -282,7 +282,7 @@ export class DevelopmentComponent {
           },
           {
             label: 'CI Workflow (GitHub Actions)',
-            detail: 'Lint → build → unit tests → E2E on every PR. Deployment blocked on any failure.',
+            detail: 'Lint → build → unit tests → E2E on every push. Deployment blocked on any failure.',
           },
         ],
       },

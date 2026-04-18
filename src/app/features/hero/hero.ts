@@ -45,7 +45,7 @@ export class HeroComponent implements OnInit {
 
   // ─── Themed badge skill lists ──────────────────────────────────────────────
   private readonly topSkills = [
-    '500+ Tests Written',
+    '5000+ Tests Written',
     'Playwright',
     'Cypress',
     'Selenium',
